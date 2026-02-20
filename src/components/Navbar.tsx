@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { translations } from '@/data/translations';
@@ -10,6 +10,17 @@ const Navbar = () => {
   const t = translations[language];
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  // Bug fix 1: Blocheaza scroll-ul body-ului cand meniul mobil e deschis
+  useEffect(() => {
+    document.body.style.overflow = mobileOpen ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [mobileOpen]);
+
+  // Inchide meniul la schimbarea rutei
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location.pathname]);
 
   const links = [
     { path: '/', label: t.nav.home },
@@ -25,7 +36,14 @@ const Navbar = () => {
     <nav className="sticky top-0 z-50 border-b border-border/60" style={{ background: 'linear-gradient(180deg, hsl(220 25% 99% / 0.97) 0%, hsl(215 35% 97% / 0.95) 100%)', backdropFilter: 'blur(16px)', boxShadow: '0 2px 20px hsl(220 72% 45% / 0.06)' }}>
       <div className="container mx-auto flex items-center justify-between h-16 px-4">
         {/* Logo */}
-        <Link to="/" className="flex items-center gap-2">
+        {/* Bug fix 4: logo face scroll to top cand esti deja pe home */}
+        <Link
+          to="/"
+          className="flex items-center gap-2"
+          onClick={() => {
+            if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
             <path d="M12 2C9.5 2 7.5 3 6.5 5C5.5 7 5 9 5 11C5 14 6 17 8 19C9 20.5 10.5 22 12 22C13.5 22 15 20.5 16 19C18 17 19 14 19 11C19 9 18.5 7 17.5 5C16.5 3 14.5 2 12 2Z" fill="currentColor" opacity="0.2"/>
             <path d="M12 2C9.5 2 7.5 3 6.5 5C5.5 7 5 9 5 11C5 14 6 17 8 19C9 20.5 10.5 22 12 22C13.5 22 15 20.5 16 19C18 17 19 14 19 11C19 9 18.5 7 17.5 5C16.5 3 14.5 2 12 2Z" stroke="currentColor" strokeWidth="1.5"/>
@@ -66,7 +84,8 @@ const Navbar = () => {
 
         {/* Mobile */}
         <div className="flex lg:hidden items-center gap-2">
-          <Link to="/programare">
+          {/* Bug fix 3: butonul Programeaza inchide meniul */}
+          <Link to="/programare" onClick={() => setMobileOpen(false)}>
             <Button variant="gold" size="sm">{t.nav.bookNow}</Button>
           </Link>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="p-2 text-foreground">
