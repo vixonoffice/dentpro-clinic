@@ -64,10 +64,14 @@ const Footer = () => {
         {/* Bottom bar */}
         <div className="mt-12 pt-6 border-t border-footer-text/20 flex flex-col md:flex-row justify-between items-center gap-3 text-xs">
           <span>{t.footer.copyright}</span>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
             <a href="#" className="hover:text-accent transition-colors">{t.footer.terms}</a>
             <a href="#" className="hover:text-accent transition-colors">{t.footer.gdpr}</a>
             <a href="#" className="hover:text-accent transition-colors">{t.footer.cookies}</a>
+            <span className="opacity-30">·</span>
+            <a href="https://vixonlab.ro" target="_blank" rel="noopener noreferrer" className="hover:text-accent transition-colors opacity-50 hover:opacity-100">
+              Site realizat de Vixon Lab
+            </a>
           </div>
         </div>
       </div>
