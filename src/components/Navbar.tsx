@@ -41,7 +41,8 @@ const Navbar = () => {
           to="/"
           className="flex items-center gap-2"
           onClick={() => {
-            if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'smooth' });
+            setMobileOpen(false);
+            if (location.pathname === '/') window.scrollTo({ top: 0, behavior: 'instant' });
           }}
         >
           <svg width="28" height="28" viewBox="0 0 24 24" fill="none" className="text-primary">
